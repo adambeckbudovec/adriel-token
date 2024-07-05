@@ -1,7 +1,5 @@
 # Adirel-Token
 ![alt text](https://github.com/adambeckbudovec/adirel-token/blob/main/AdrielCOIN.jpg)
-Certainly! Below is a summary for your `README.md` file for the Adriel Token project, which includes all the updated details about the token, its purpose, and the various mining methods.
-
 ```markdown
 # Adriel Token
 
