@@ -15,13 +15,6 @@ contract AdrielToken is ERC20, Ownable {
         _mint(msg.sender, initialSupply);
     }
 
-    function minePoW(address miner, uint256 nonce, uint256 amount) public onlyOwner {
-        require(isValidProof(miner, nonce), "Invalid proof of work");
-        nonces[miner] = nonce;
-        _mint(miner, amount);
-        emit Mined(miner, amount, "PoW");
-    }
-
     function minePoC(address miner, uint256 amount) public onlyOwner {
         _mint(miner, amount);
         emit Mined(miner, amount, "PoC");
@@ -40,14 +33,5 @@ contract AdrielToken is ERC20, Ownable {
     function donate(address from, address to, uint256 amount) public {
         _transfer(from, to, amount);
         emit Donated(from, to, amount);
-    }
-
-    function isValidProof(address miner, uint256 nonce) internal view returns (bool) {
-        bytes32 hash = keccak256(abi.encodePacked(miner, nonce));
-        return uint256(hash) < target();
-    }
-
-    function target() internal pure returns (uint256) {
-        return uint256(keccak256(abi.encodePacked("adriel"))) >> 8; // Adjust difficulty as needed
     }
 }
