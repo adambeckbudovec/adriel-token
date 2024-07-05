@@ -7,22 +7,43 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract AdrielToken is ERC20, Ownable {
     mapping(address => uint256) public nonces;
 
-    constructor(uint256 initialSupply) ERC20("AdrielToken", "ADRL") {
+    event Mined(address indexed miner, uint256 amount, string method);
+    event Donated(address indexed from, address indexed to, uint256 amount);
+
+    constructor() ERC20("AdrielToken", "ADRL") {
+        uint256 initialSupply = 27900000 * 10 ** decimals();
         _mint(msg.sender, initialSupply);
     }
 
-    function mine(uint256 nonce, uint256 amount) public onlyOwner {
-        require(isValidProof(nonce), "Invalid proof of work");
-        nonces[msg.sender] = nonce;
-        _mint(msg.sender, amount);
+    function minePoW(address miner, uint256 nonce, uint256 amount) public onlyOwner {
+        require(isValidProof(miner, nonce), "Invalid proof of work");
+        nonces[miner] = nonce;
+        _mint(miner, amount);
+        emit Mined(miner, amount, "PoW");
     }
 
-    function donate(address from, address to, uint256 amount) public onlyOwner {
+    function minePoC(address miner, uint256 amount) public onlyOwner {
+        _mint(miner, amount);
+        emit Mined(miner, amount, "PoC");
+    }
+
+    function minePoHW(address miner, uint256 amount) public onlyOwner {
+        _mint(miner, amount);
+        emit Mined(miner, amount, "PoHW");
+    }
+
+    function minePoUW(address miner, uint256 amount) public onlyOwner {
+        _mint(miner, amount);
+        emit Mined(miner, amount, "PoUW");
+    }
+
+    function donate(address from, address to, uint256 amount) public {
         _transfer(from, to, amount);
+        emit Donated(from, to, amount);
     }
 
-    function isValidProof(uint256 nonce) internal view returns (bool) {
-        bytes32 hash = keccak256(abi.encodePacked(msg.sender, nonce));
+    function isValidProof(address miner, uint256 nonce) internal view returns (bool) {
+        bytes32 hash = keccak256(abi.encodePacked(miner, nonce));
         return uint256(hash) < target();
     }
 
