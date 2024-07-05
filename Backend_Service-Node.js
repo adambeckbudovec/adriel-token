@@ -11,19 +11,6 @@ const contract = new web3.eth.Contract(abi, contractAddress);
 const ownerAddress = 'YOUR_OWNER_ADDRESS'; // Replace with the owner's address from Ganache
 const privateKey = 'YOUR_PRIVATE_KEY'; // Replace with the owner's private key from Ganache
 
-app.post('/submit_pow', async (req, res) => {
-    const { miner, nonce, amount } = req.body;
-
-    // Validate proof of work
-    const isValid = validateProof(miner, nonce);
-    if (isValid) {
-        const tx = contract.methods.minePoW(miner, nonce, amount);
-        await sendTransaction(tx, res);
-    } else {
-        res.status(400).json({ success: false, error: 'Invalid proof' });
-    }
-});
-
 app.post('/submit_poc', async (req, res) => {
     const { miner, amount } = req.body;
 
@@ -87,12 +74,6 @@ const sendTransaction = async (tx, res) => {
     }
 };
 
-const validateProof = (miner, nonce) => {
-    const prefix = '0'.repeat(5); // Adjust the difficulty
-    const hash = web3.utils.soliditySha3({ type: 'address', value: miner }, { type: 'uint256', value: nonce });
-    return hash.startsWith(prefix);
-};
-
 const validateContribution = (miner) => {
     // Implement your contribution validation logic
     return true;
@@ -105,9 +86,4 @@ const validateHumanWork = (miner) => {
 
 const validateUsefulWork = (miner, taskResult) => {
     // Implement your useful work validation logic (e.g., checking results of computational tasks)
-    return true;
-};
-
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+    return t
