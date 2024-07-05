@@ -1,37 +1,32 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract MiningToken {
-    mapping(address => uint256) public balances;
-    uint256 public totalSupply;
-    
-    // Difficulty for the simulated PoW
-    uint256 public difficulty = 2**252;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-    event Mined(address indexed miner, uint256 reward);
+contract AdrielToken is ERC20, Ownable {
+    mapping(address => uint256) public nonces;
 
-    constructor(uint256 initialSupply) {
-        totalSupply = initialSupply;
-        balances[msg.sender] = initialSupply;
+    constructor(uint256 initialSupply) ERC20("AdrielToken", "ADRL") {
+        _mint(msg.sender, initialSupply);
     }
 
-    function mine() external {
-        // Simulated PoW
-        require(balances[msg.sender] > 0, "Insufficient balance for mining");
-
-        // Generate a random number (nonce)
-        uint256 nonce = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender)));
-
-        // Check the PoW difficulty
-        require(nonce < difficulty, "Mining unsuccessful");
-
-        // Reward the miner
-        uint256 reward = 1;
-        balances[msg.sender] += reward;
-        totalSupply += reward;
-
-        emit Mined(msg.sender, reward);
+    function mine(uint256 nonce, uint256 amount) public onlyOwner {
+        require(isValidProof(nonce), "Invalid proof of work");
+        nonces[msg.sender] = nonce;
+        _mint(msg.sender, amount);
     }
 
-    // Other standard ERC-20 functions can be added
+    function donate(address from, address to, uint256 amount) public onlyOwner {
+        _transfer(from, to, amount);
+    }
+
+    function isValidProof(uint256 nonce) internal view returns (bool) {
+        bytes32 hash = keccak256(abi.encodePacked(msg.sender, nonce));
+        return uint256(hash) < target();
+    }
+
+    function target() internal pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked("adriel"))) >> 8; // Adjust difficulty as needed
+    }
 }
