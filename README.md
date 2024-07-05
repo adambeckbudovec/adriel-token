@@ -17,15 +17,7 @@ Adriel Token (ADRL) is a cryptocurrency built on the Ethereum Classic (ETC) bloc
 
 Adriel Token supports four mining methods to accommodate various types of contributions:
 
-### 1. Proof of Work (PoW)
-
-Traditional mining method where miners solve cryptographic puzzles.
-
-- **Endpoint**: `/submit_pow`
-- **Validation**: Miners must submit a valid nonce that solves a cryptographic puzzle.
-- **Reward**: ADRL tokens
-
-### 2. Proof of Contribution (PoC)
+### 1. Proof of Contribution (PoC)
 
 Users contribute computational power to AI systems that combat human trafficking.
 
@@ -33,7 +25,7 @@ Users contribute computational power to AI systems that combat human trafficking
 - **Validation**: Miners contribute to AI computational tasks.
 - **Reward**: ADRL tokens
 
-### 3. Proof of Human Work (PoHW)
+### 2. Proof of Human Work (PoHW)
 
 Users perform human-verifiable tasks, such as data labeling or participating in awareness campaigns.
 
@@ -41,7 +33,7 @@ Users perform human-verifiable tasks, such as data labeling or participating in 
 - **Validation**: Miners complete human-verifiable tasks.
 - **Reward**: ADRL tokens
 
-### 4. Proof of Useful Work (PoUW)
+### 3. Proof of Useful Work (PoUW)
 
 Users perform computational tasks with intrinsic value, such as scientific research or data analysis.
 
