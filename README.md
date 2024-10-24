@@ -1,4 +1,4 @@
-# Adirel-Token
+# Adriel-Token
 ![alt text](https://github.com/adambeckbudovec/adirel-token/blob/main/AdrielCOIN.jpg)
 ```markdown
 # Adriel Token
